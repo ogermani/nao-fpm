@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="com.jedox.starterkitlobellia~ExportAnalyse" version="26.1" uiVersion="0.1" modified="1780220352349" modifiedBy="admin" olapId="p39">
+  <headers>
+    <header name="comment" modified="1780220352349" modifiedBy="admin">
+      <comment><![CDATA[Export Parquet du cube Analyse + ses 6 dimensions (LOBELLIA)]]></comment>
+    </header>
+  </headers>
+  <variables />
+  <connections>
+    <connection modified="1780220352349" name="c_olap_lobellia" type="JedoxOlap" modifiedBy="admin">
+      <global nameref="localhost" />
+      <database><![CDATA[LOBELLIA]]></database>
+      <ssl>off</ssl>
+    </connection>
+    <connection modified="1780220352349" name="c_pq_periode" type="ParquetFile" modifiedBy="admin">
+      <directory>false</directory>
+      <location type="FileSystem" />
+      <database><![CDATA[dim_periode.parquet]]></database>
+    </connection>
+    <connection modified="1780220352349" name="c_pq_version_fpm" type="ParquetFile" modifiedBy="admin">
+      <directory>false</directory>
+      <location type="FileSystem" />
+      <database><![CDATA[dim_version_fpm.parquet]]></database>
+    </connection>
+    <connection modified="1780220352349" name="c_pq_imputation" type="ParquetFile" modifiedBy="admin">
+      <directory>false</directory>
+      <location type="FileSystem" />
+      <database><![CDATA[dim_imputation.parquet]]></database>
+    </connection>
+    <connection modified="1780220352349" name="c_pq_organisation" type="ParquetFile" modifiedBy="admin">
+      <directory>false</directory>
+      <location type="FileSystem" />
+      <database><![CDATA[dim_organisation.parquet]]></database>
+    </connection>
+    <connection modified="1780220352349" name="c_pq_ressource" type="ParquetFile" modifiedBy="admin">
+      <directory>false</directory>
+      <location type="FileSystem" />
+      <database><![CDATA[dim_ressource.parquet]]></database>
+    </connection>
+    <connection modified="1780220352349" name="c_pq_indicateurs_analyse" type="ParquetFile" modifiedBy="admin">
+      <directory>false</directory>
+      <location type="FileSystem" />
+      <database><![CDATA[dim_indicateurs_analyse.parquet]]></database>
+    </connection>
+    <connection modified="1780220352349" name="c_pq_cube_analyse" type="ParquetFile" modifiedBy="admin">
+      <directory>false</directory>
+      <location type="FileSystem" />
+      <database><![CDATA[cube_analyse.parquet]]></database>
+    </connection>
+  </connections>
+  <extracts>
+    <extract modified="1780220352349" name="e_dim_periode" type="Dimension" modifiedBy="admin">
+      <connection nameref="c_olap_lobellia" />
+      <query>
+        <dimension name="Période" />
+      </query>
+      <attributesMode>standardAttributes</attributesMode>
+    </extract>
+    <extract modified="1780220352349" name="e_dim_version_fpm" type="Dimension" modifiedBy="admin">
+      <connection nameref="c_olap_lobellia" />
+      <query>
+        <dimension name="Version FPM" />
+      </query>
+      <attributesMode>standardAttributes</attributesMode>
+    </extract>
+    <extract modified="1780220352349" name="e_dim_imputation" type="Dimension" modifiedBy="admin">
+      <connection nameref="c_olap_lobellia" />
+      <query>
+        <dimension name="Imputation" />
+      </query>
+      <attributesMode>standardAttributes</attributesMode>
+    </extract>
+    <extract modified="1780220352349" name="e_dim_organisation" type="Dimension" modifiedBy="admin">
+      <connection nameref="c_olap_lobellia" />
+      <query>
+        <dimension name="Organisation" />
+      </query>
+      <attributesMode>standardAttributes</attributesMode>
+    </extract>
+    <extract modified="1780220352349" name="e_dim_ressource" type="Dimension" modifiedBy="admin">
+      <connection nameref="c_olap_lobellia" />
+      <query>
+        <dimension name="Ressource" />
+      </query>
+      <attributesMode>standardAttributes</attributesMode>
+    </extract>
+    <extract modified="1780220352349" name="e_dim_indicateurs_analyse" type="Dimension" modifiedBy="admin">
+      <connection nameref="c_olap_lobellia" />
+      <query>
+        <dimension name="Indicateurs Analyse" />
+      </query>
+      <attributesMode>standardAttributes</attributesMode>
+    </extract>
+    <extract modified="1780220352349" name="e_cube_analyse" type="Cube" modifiedBy="admin">
+      <connection nameref="c_olap_lobellia" />
+      <query celltype="both" drillthrough="false" onlyBasisAsDefault="true" useRules="true" zeroSuppressionType="excludeEmptyAndZero">
+        <cube name="Analyse" />
+      </query>
+      <cache>false</cache>
+    </extract>
+  </extracts>
+  <transforms>
+    <transform modified="1780220352349" name="t_tbv_periode" type="TableView" modifiedBy="admin">
+      <sources>
+        <source format="pcwa" nameref="e_dim_periode" />
+      </sources>
+      <cache>false</cache>
+    </transform>
+    <transform modified="1780220352349" name="t_tbv_version_fpm" type="TableView" modifiedBy="admin">
+      <sources>
+        <source format="pcwa" nameref="e_dim_version_fpm" />
+      </sources>
+      <cache>false</cache>
+    </transform>
+    <transform modified="1780220352349" name="t_tbv_imputation" type="TableView" modifiedBy="admin">
+      <sources>
+        <source format="pcwa" nameref="e_dim_imputation" />
+      </sources>
+      <cache>false</cache>
+    </transform>
+    <transform modified="1780220352349" name="t_tbv_organisation" type="TableView" modifiedBy="admin">
+      <sources>
+        <source format="pcwa" nameref="e_dim_organisation" />
+      </sources>
+      <cache>false</cache>
+    </transform>
+    <transform modified="1780220352349" name="t_tbv_ressource" type="TableView" modifiedBy="admin">
+      <sources>
+        <source format="pcwa" nameref="e_dim_ressource" />
+      </sources>
+      <cache>false</cache>
+    </transform>
+    <transform modified="1780220352349" name="t_tbv_indicateurs_analyse" type="TableView" modifiedBy="admin">
+      <sources>
+        <source format="pcwa" nameref="e_dim_indicateurs_analyse" />
+      </sources>
+      <cache>false</cache>
+    </transform>
+    <transform modified="1780220352349" name="t_tbv_cube_analyse" type="TableView" modifiedBy="admin">
+      <sources>
+        <source nameref="e_cube_analyse" />
+      </sources>
+    </transform>
+  </transforms>
+  <loads>
+    <load modified="1780220352349" name="l_dim_periode" type="Parquet" modifiedBy="admin">
+      <source nameref="t_tbv_periode" />
+      <connection nameref="c_pq_periode" />
+      <ignoreEmpty>false</ignoreEmpty>
+    </load>
+    <load modified="1780220352349" name="l_dim_version_fpm" type="Parquet" modifiedBy="admin">
+      <source nameref="t_tbv_version_fpm" />
+      <connection nameref="c_pq_version_fpm" />
+      <ignoreEmpty>false</ignoreEmpty>
+    </load>
+    <load modified="1780220352349" name="l_dim_imputation" type="Parquet" modifiedBy="admin">
+      <source nameref="t_tbv_imputation" />
+      <connection nameref="c_pq_imputation" />
+      <ignoreEmpty>false</ignoreEmpty>
+    </load>
+    <load modified="1780220352349" name="l_dim_organisation" type="Parquet" modifiedBy="admin">
+      <source nameref="t_tbv_organisation" />
+      <connection nameref="c_pq_organisation" />
+      <ignoreEmpty>false</ignoreEmpty>
+    </load>
+    <load modified="1780220352349" name="l_dim_ressource" type="Parquet" modifiedBy="admin">
+      <source nameref="t_tbv_ressource" />
+      <connection nameref="c_pq_ressource" />
+      <ignoreEmpty>false</ignoreEmpty>
+    </load>
+    <load modified="1780220352349" name="l_dim_indicateurs_analyse" type="Parquet" modifiedBy="admin">
+      <source nameref="t_tbv_indicateurs_analyse" />
+      <connection nameref="c_pq_indicateurs_analyse" />
+      <ignoreEmpty>false</ignoreEmpty>
+    </load>
+    <load modified="1780220352349" name="l_cube_analyse" type="Parquet" modifiedBy="admin">
+      <source nameref="t_tbv_cube_analyse" />
+      <connection nameref="c_pq_cube_analyse" />
+      <ignoreEmpty>false</ignoreEmpty>
+    </load>
+  </loads>
+  <jobs>
+    <job modified="1780220352349" name="j_export_analyse" type="Standard" modifiedBy="admin">
+      <executions>
+        <execution nameref="l_dim_periode" type="load" />
+        <execution nameref="l_dim_version_fpm" type="load" />
+        <execution nameref="l_dim_imputation" type="load" />
+        <execution nameref="l_dim_organisation" type="load" />
+        <execution nameref="l_dim_ressource" type="load" />
+        <execution nameref="l_dim_indicateurs_analyse" type="load" />
+        <execution nameref="l_cube_analyse" type="load" />
+      </executions>
+      <failStatus>inherit</failStatus>
+    </job>
+  </jobs>
+</project>

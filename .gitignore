@@ -1,0 +1,63 @@
+# Environnement Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Donnees locales (jamais commit)
+poc-data/*.duckdb
+poc-data/*.parquet
+poc-data/*.csv
+poc-data/*.bson
+!poc-data/.gitkeep
+
+# Sources de l'application Jedox deposees dans poc-data (XML/jds + report book .pb de 50 Mo)
+# Gardees en local pour analyse, hors git (le .pb est binaire et volumineux).
+poc-data/Application/
+
+# Archive de transfert (chiffree mais reste sensible)
+poc-data-transfer.zip
+poc-data-transfer.sha256
+
+# Credentials et secrets
+*.key
+*key*.txt
+.env
+.env.*
+.anthropic_key
+secret*
+
+# Nao bin et SQLite (contiennent state local + cles API)
+**/db.sqlite
+**/db.sqlite-journal
+
+# Fichier de travail a jeter
+.claude.avirer
+
+# Artefacts dbt (générés)
+target/
+dbt_packages/
+logs/
+.dbt/
+.user.yml
+
+# Skills Nao installées (restaurables via skills-lock.json → `nao skills experimental_install`).
+# On versionne le lockfile, pas le contenu (façon node_modules).
+.agents/
+
+# Caches et builds
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+build/
+dist/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

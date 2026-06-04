@@ -1,0 +1,14 @@
+# Configuration documentation:
+# https://docs.getnao.io/nao-agent/context-builder/configuration#nao_config-yaml
+
+project_name: nao-fpm
+
+databases:
+  - name: lobellia_fpm
+    type: duckdb
+    path: ./poc-data/lobellia_fpm.duckdb
+    templates:
+      - columns
+      - preview
+
+repos: []

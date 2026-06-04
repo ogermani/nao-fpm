@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "add-semantic-layer": {
+      "source": "getnao/nao",
+      "sourceType": "github",
+      "skillPath": "skills/add-semantic-layer/SKILL.md",
+      "computedHash": "7aa8ecc41e4f43bf29a8a3270a13e68be937e594b5154f97b33bd79f7c5e6a19"
+    },
+    "audit-context": {
+      "source": "getnao/nao",
+      "sourceType": "github",
+      "skillPath": "skills/audit-context/SKILL.md",
+      "computedHash": "abc082028162fba022570fb65b02f0795562362822137f5f782a28f549a90669"
+    },
+    "create-context-tests": {
+      "source": "getnao/nao",
+      "sourceType": "github",
+      "skillPath": "skills/create-context-tests/SKILL.md",
+      "computedHash": "0a4c8d40659aa028ca60e336438afad55550ca6aee4075a7268d14c807518234"
+    }
+  }
+}

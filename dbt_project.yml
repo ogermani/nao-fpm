@@ -1,0 +1,21 @@
+name: 'lobellia_fpm'
+version: '1.0.0'
+config-version: 2
+
+profile: 'lobellia_fpm'
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages", "logs"]
+
+# Répertoire des extraits Jedox (parquet/csv). Surchargeable :
+#   dbt build --vars '{poc_data_dir: /chemin/absolu/poc-data}'
+vars:
+  poc_data_dir: "poc-data"
+
+models:
+  lobellia_fpm:
+    jedox:
+      +materialized: table
+      +schema: jedox

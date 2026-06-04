@@ -1,0 +1,11 @@
+# Profil dbt (gardé dans le repo pour la portabilité).
+# Lancer dbt avec :  dbt build --profiles-dir .
+# Le chemin DuckDB est relatif à la racine du projet (lancer dbt depuis la racine).
+lobellia_fpm:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "poc-data/lobellia_fpm.duckdb"
+      schema: main
+      threads: 4
