@@ -51,16 +51,25 @@ Détails : `semantics/jedox_taxonomy.md` (valeurs des axes) et `semantics/jedox_
 
 ## Mesures dérivées (rappel — cube exporté avec `useRules=true`)
 
-Le cube Analyse est piloté par ~130 règles Jedox (production régie/forfait, cumuls YTD, TJM théorique,
-taux d'utilisation/présence, comparaison à la FPM précédente via l'attribut `PreviousFpm`…). Les
-valeurs dérivées sont **déjà matérialisées** dans le Parquet exporté → les lire directement comme
-n'importe quelle `indicateurs_analyse`, **ne pas les recalculer**.
+Le cube Analyse est piloté par **26 règles Jedox** (production régie/forfait, cumuls YTD, TJM
+théorique, taux d'utilisation/présence, comparaison à la FPM précédente via `PreviousFpm`…). Les
+valeurs dérivées sont **déjà matérialisées** dans le Parquet → les lire directement comme
+n'importe quelle `indicateurs_analyse`. **Ne pas les recalculer, ne pas re-sommer des YTD.**
+
+Points critiques :
+- Les mesures `… (YTD)` valent **0 pour les années ≠ année de la FPM courante**.
+- `Jours produits (redressé par ressource)` : Régie = J/H, Forfait = Jours imputés (≠ J/H).
+- `Surproduction` : nœud technique à **exclure** des totaux collaborateurs.
+- Production forfait pour les mois passés : vient de la **FPM précédente** (`PreviousFpm`).
+
+→ Voir `semantics/jedox_regles_cube.md` pour la logique complète de chaque mesure.
 
 ## Orchestration — où trouver les détails
 
 | Sujet | Fichier |
 |---|---|
 | **Taxonomie** (versions FPM, mesures, périodes, axes) | `semantics/jedox_taxonomy.md` |
-| **Dimensions** (hiérarchies, attributs, roll-up) | `semantics/jedox_dimensions.md` |
+| **Règles de gestion** (logique de calcul de chaque mesure) | `semantics/jedox_regles_cube.md` |
+| **Dimensions** (hiérarchies, attributs, roll-up, pièges) | `semantics/jedox_dimensions.md` |
 | **Glossaire** FPM (régie/forfait, TJM, staffing, RAF) | `semantics/glossaire.md` |
-| Détails par table (auto-générés) | `databases/type=duckdb/database=lobellia_fpm/schema=jedox/table=<t>/` |
+| Détails par table (colonnes, aperçu) | `databases/type=duckdb/database=lobellia_fpm/schema=jedox/table=<t>/` |
