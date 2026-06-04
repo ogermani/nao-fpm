@@ -1,9 +1,16 @@
-# dim_ressource — aperçu (5 premières lignes)
+# dim_ressource - Preview
 
-| parent            | child             | weight | nom_complet     | organisation | poste | societe | sous_traitant | type |
-|-------------------|-------------------|--------|-----------------|--------------|-------|---------|---------------|------|
-|                   | Total Ressources  | 1.0    |                 |              |       |         |               | C    |
-| Total Ressources  | Ressource~        | 1.0    |                 |              |       |         |               | N    |
-| Total Ressources  | RessourcesFutures | 1.0    | FUTURES         |              |       |         |               | C    |
-| RessourcesFutures | ToBeDefined0      | 1.0    | To Be Defined 1 |              |       |         |               | N    |
-| Total Ressources  | Dupont.Jean       | 1.0    | Jean Dupont     | BU Services  | Dev   | LOBELLIA Conseil | 0  | N    |
+**Dataset:** `jedox`
+
+## Rows (10)
+
+- {"parent": "", "child": "Total Ressources", "weight": "1.0", "nom_complet": "", "email": "", "start_date": "", "end_date": "", "organisation": "", "poste": "", "id_castor": "", "societe": "", "tri": "Total Ressources", "sous_traitant": "", "nom": "", "ancien_nom_complet": "", "type": "C"}
+- {"parent": "Total Ressources", "child": "Ressource~", "weight": "1.0", "nom_complet": "", "email": "", "start_date": "", "end_date": "", "organisation": "", "poste": "", "id_castor": "", "societe": "", "tri": "Ressource~", "sous_traitant": "", "nom": "", "ancien_nom_complet": "", "type": "N"}
+- {"parent": "Total Ressources", "child": "RessourcesFutures", "weight": "1.0", "nom_complet": "FUTURES", "email": "", "start_date": "", "end_date": "", "organisation": "", "poste": "", "id_castor": "", "societe": "", "tri": "RessourcesFutures", "sous_traitant": "", "nom": "", "ancien_nom_complet": "", "type": "C"}
+- {"parent": "RessourcesFutures", "child": "ToBeDefined0", "weight": "1.0", "nom_complet": "To Be Defined 1", "email": "", "start_date": "", "end_date": "", "organisation": "", "poste": "", "id_castor": "", "societe": "", "tri": "zzz_ToBeDefined0", "sous_traitant": "", "nom": "", "ancien_nom_complet": "", "type": "N"}
+- {"parent": "RessourcesFutures", "child": "ToBeDefined1", "weight": "1.0", "nom_complet": "To Be Defined 2", "email": "", "start_date": "", "end_date": "", "organisation": "", "poste": "", "id_castor": "", "societe": "", "tri": "zzz_ToBeDefined1", "sous_traitant": "", "nom": "", "ancien_nom_complet": "", "type": "N"}
+- {"parent": "RessourcesFutures", "child": "ToBeDefined2", "weight": "1.0", "nom_complet": "To Be Defined 3", "email": "", "start_date": "", "end_date": "", "organisation": "", "poste": "", "id_castor": "", "societe": "", "tri": "zzz_ToBeDefined2", "sous_traitant": "", "nom": "", "ancien_nom_complet": "", "type": "N"}
+- {"parent": "RessourcesFutures", "child": "ToBeDefined3", "weight": "1.0", "nom_complet": "To Be Defined 4", "email": "", "start_date": "", "end_date": "", "organisation": "", "poste": "", "id_castor": "", "societe": "", "tri": "zzz_ToBeDefined3", "sous_traitant": "", "nom": "", "ancien_nom_complet": "", "type": "N"}
+- {"parent": "RessourcesFutures", "child": "ToBeDefined4", "weight": "1.0", "nom_complet": "To Be Defined 5", "email": "", "start_date": "", "end_date": "", "organisation": "", "poste": "", "id_castor": "", "societe": "", "tri": "zzz_ToBeDefined4", "sous_traitant": "", "nom": "", "ancien_nom_complet": "", "type": "N"}
+- {"parent": "RessourcesFutures", "child": "ToBeDefined5", "weight": "1.0", "nom_complet": "To Be Defined 6", "email": "", "start_date": "", "end_date": "", "organisation": "", "poste": "", "id_castor": "", "societe": "", "tri": "zzz_ToBeDefined5", "sous_traitant": "", "nom": "", "ancien_nom_complet": "", "type": "N"}
+- {"parent": "RessourcesFutures", "child": "ToBeDefined6", "weight": "1.0", "nom_complet": "To Be Defined 7", "email": "", "start_date": "", "end_date": "", "organisation": "", "poste": "", "id_castor": "", "societe": "", "tri": "zzz_ToBeDefined6", "sous_traitant": "", "nom": "", "ancien_nom_complet": "", "type": "N"}

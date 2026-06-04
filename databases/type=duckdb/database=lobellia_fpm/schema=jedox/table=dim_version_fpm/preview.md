@@ -1,9 +1,16 @@
-# dim_version_fpm — aperçu (5 premières lignes)
+# dim_version_fpm - Preview
 
-| parent | child       | weight | alias       | alias_simple | mois | annee | currentmonth | previousfpm | nextfpm     | type_version | type |
-|--------|-------------|--------|-------------|--------------|------|-------|--------------|-------------|-------------|--------------|------|
-|        | FPM_2020_01 | 1.0    | FPM janv 20 | 01_20        | 1    | 2020  | 2020-01      | FPM_2019_12 | FPM_2020_02 | Production   | N    |
-|        | FPM_2020_02 | 1.0    | FPM févr 20 | 02_20        | 2    | 2020  | 2020-02      | FPM_2020_01 | FPM_2020_03 | Production   | N    |
-|        | FPM_2020_03 | 1.0    | FPM mars 20 | 03_20        | 3    | 2020  | 2020-03      | FPM_2020_02 | FPM_2020_04 | Production   | N    |
-|        | FPM_2025_06 | 1.0    | FPM juin 25 | 06_25        | 6    | 2025  | 2025-06      | FPM_2025_05 | FPM_2025_07 | Production   | N    |
-|        | FPM_2026_04_Simu_01 | 1.0 | FPM avr 26 Simulation 01 | | 4 | 2026 | 2026-04    | |             | Simulation   | N    |
+**Dataset:** `jedox`
+
+## Rows (10)
+
+- {"parent": "", "child": "FPM_2020_01", "weight": "1.0", "alias": "FPM janv 20", "alias_simple": "01_20", "mois": "1", "annee": "2020", "previousmonth": "2019-12", "nextmonth": "2020-02", "currentmonth": "2020-01", "currentmonthvalue1": 1577836800.0, "afficher": 1.0, "previousfpm": "FPM_2019_12", "nextfpm": "FPM_2020_02", "type_version": "Production", "type": "N"}
+- {"parent": "", "child": "FPM_2020_02", "weight": "1.0", "alias": "FPM f�vr 20", "alias_simple": "02_20", "mois": "2", "annee": "2020", "previousmonth": "2020-01", "nextmonth": "2020-03", "currentmonth": "2020-02", "currentmonthvalue1": 1580515200.0, "afficher": 1.0, "previousfpm": "FPM_2020_01", "nextfpm": "FPM_2020_03", "type_version": "Production", "type": "N"}
+- {"parent": "", "child": "FPM_2020_03", "weight": "1.0", "alias": "FPM mars 20", "alias_simple": "03_20", "mois": "3", "annee": "2020", "previousmonth": "2020-02", "nextmonth": "2020-04", "currentmonth": "2020-03", "currentmonthvalue1": 1583020800.0, "afficher": 1.0, "previousfpm": "FPM_2020_02", "nextfpm": "FPM_2020_04", "type_version": "Production", "type": "N"}
+- {"parent": "", "child": "FPM_2020_04", "weight": "1.0", "alias": "FPM avr 20", "alias_simple": "04_20", "mois": "4", "annee": "2020", "previousmonth": "2020-03", "nextmonth": "2020-05", "currentmonth": "2020-04", "currentmonthvalue1": 1585699200.0, "afficher": 1.0, "previousfpm": "FPM_2020_03", "nextfpm": "FPM_2020_05", "type_version": "Production", "type": "N"}
+- {"parent": "", "child": "FPM_2020_05", "weight": "1.0", "alias": "FPM mai 20", "alias_simple": "05_20", "mois": "5", "annee": "2020", "previousmonth": "2020-04", "nextmonth": "2020-06", "currentmonth": "2020-05", "currentmonthvalue1": 1588291200.0, "afficher": 1.0, "previousfpm": "FPM_2020_04", "nextfpm": "FPM_2020_06", "type_version": "Production", "type": "N"}
+- {"parent": "", "child": "FPM_2020_06", "weight": "1.0", "alias": "FPM juin 20", "alias_simple": "06_20", "mois": "6", "annee": "2020", "previousmonth": "2020-05", "nextmonth": "2020-07", "currentmonth": "2020-06", "currentmonthvalue1": 1590969600.0, "afficher": 1.0, "previousfpm": "FPM_2020_05", "nextfpm": "FPM_2020_07", "type_version": "Production", "type": "N"}
+- {"parent": "", "child": "FPM_2020_07", "weight": "1.0", "alias": "FPM juil 20", "alias_simple": "07_20", "mois": "7", "annee": "2020", "previousmonth": "2020-06", "nextmonth": "2020-08", "currentmonth": "2020-07", "currentmonthvalue1": 1593561600.0, "afficher": 1.0, "previousfpm": "FPM_2020_06", "nextfpm": "FPM_2020_08", "type_version": "Production", "type": "N"}
+- {"parent": "", "child": "FPM_2020_08", "weight": "1.0", "alias": "FPM ao�t 20", "alias_simple": "08_20", "mois": "8", "annee": "2020", "previousmonth": "2020-07", "nextmonth": "2020-09", "currentmonth": "2020-08", "currentmonthvalue1": 1596240000.0, "afficher": 1.0, "previousfpm": "FPM_2020_07", "nextfpm": "FPM_2020_09", "type_version": "Production", "type": "N"}
+- {"parent": "", "child": "FPM_2020_09", "weight": "1.0", "alias": "FPM sept 20", "alias_simple": "09_20", "mois": "9", "annee": "2020", "previousmonth": "2020-08", "nextmonth": "2020-10", "currentmonth": "2020-09", "currentmonthvalue1": 1598918400.0, "afficher": 1.0, "previousfpm": "FPM_2020_08", "nextfpm": "FPM_2020_10", "type_version": "Production", "type": "N"}
+- {"parent": "", "child": "FPM_2020_10", "weight": "1.0", "alias": "FPM oct 20", "alias_simple": "10_20", "mois": "10", "annee": "2020", "previousmonth": "2020-09", "nextmonth": "2020-11", "currentmonth": "2020-10", "currentmonthvalue1": 1601510400.0, "afficher": 1.0, "previousfpm": "FPM_2020_09", "nextfpm": "FPM_2020_11", "type_version": "Production", "type": "N"}

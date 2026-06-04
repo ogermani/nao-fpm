@@ -1,9 +1,16 @@
-# analyse â€” aperÃ§u (5 premiÃ¨res lignes)
+# analyse - Preview
 
-| periode    | version_fpm | imputation | organisation          | ressource                 | indicateurs_analyse | value_raw | value_num |
-|------------|-------------|------------|-----------------------|---------------------------|---------------------|-----------|-----------|
-| All Months | FPM_2022_05 | 1          | Total Groupe LOBELLIA | Total Ressources          | Jours_consommÃ©s     | 332.25    | 332.25    |
-| All Months | FPM_2022_05 | 1          | Total Groupe LOBELLIA | Total Ressources          | Jours_imputÃ©s       | 368.25    | 368.25    |
-| All Months | FPM_2022_05 | 1          | Total Groupe LOBELLIA | RessourcesLobelliaConseil | Jours_consommÃ©s     | 332.25    | 332.25    |
-| All Months | FPM_2022_05 | 1          | Total Groupe LOBELLIA | RessourcesLobelliaConseil | Jours_imputÃ©s       | 367.75    | 367.75    |
-| All Months | FPM_2022_05 | 1          | Total Groupe LOBELLIA | RessourcesLobelliaLyon    | Jours_imputÃ©s       | 0.5       | 0.5       |
+**Dataset:** `jedox`
+
+## Rows (10)
+
+- {"periode": "2020-01", "version_fpm": "FPM_2022_07", "imputation": "81-~", "organisation": "BU Public", "ressource": "lducroux", "indicateurs_analyse": "Jours_consommés", "value_raw": "1.0", "value_num": 1.0}
+- {"periode": "2020-01", "version_fpm": "FPM_2022_07", "imputation": "81-~", "organisation": "BU Public", "ressource": "lducroux", "indicateurs_analyse": "Jours_imputés", "value_raw": "1.0", "value_num": 1.0}
+- {"periode": "2020-01", "version_fpm": "FPM_2022_07", "imputation": "81-~", "organisation": "BU Public", "ressource": "lducroux", "indicateurs_analyse": "Jours_produits_regie", "value_raw": "1.0", "value_num": 1.0}
+- {"periode": "2020-01", "version_fpm": "FPM_2022_07", "imputation": "81-~", "organisation": "BU Public", "ressource": "lducroux", "indicateurs_analyse": "Jours Produits & Absences", "value_raw": "2.0", "value_num": 2.0}
+- {"periode": "2020-01", "version_fpm": "FPM_2022_07", "imputation": "167-~", "organisation": "BU Finance & Industrie", "ressource": "glavenant", "indicateurs_analyse": "Jours_consommés", "value_raw": "4.0", "value_num": 4.0}
+- {"periode": "2020-01", "version_fpm": "FPM_2022_07", "imputation": "167-~", "organisation": "BU Finance & Industrie", "ressource": "glavenant", "indicateurs_analyse": "Jours_imputés", "value_raw": "4.0", "value_num": 4.0}
+- {"periode": "2020-01", "version_fpm": "FPM_2022_07", "imputation": "167-~", "organisation": "BU Finance & Industrie", "ressource": "glavenant", "indicateurs_analyse": "Jours Produits & Absences", "value_raw": "6.0", "value_num": 6.0}
+- {"periode": "2020-01", "version_fpm": "FPM_2022_07", "imputation": "228-~", "organisation": "BU Public", "ressource": "kbendaoud", "indicateurs_analyse": "Jours_consommés", "value_raw": "20.0", "value_num": 20.0}
+- {"periode": "2020-01", "version_fpm": "FPM_2022_07", "imputation": "228-~", "organisation": "BU Public", "ressource": "kbendaoud", "indicateurs_analyse": "Jours_imputés", "value_raw": "20.0", "value_num": 20.0}
+- {"periode": "2020-01", "version_fpm": "FPM_2022_07", "imputation": "228-~", "organisation": "BU Public", "ressource": "kbendaoud", "indicateurs_analyse": "Jours_produits_regie", "value_raw": "20.0", "value_num": 20.0}

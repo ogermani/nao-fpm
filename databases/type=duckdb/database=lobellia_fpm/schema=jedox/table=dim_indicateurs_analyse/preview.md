@@ -1,14 +1,16 @@
-# dim_indicateurs_analyse ‚Äî aper√ßu (10 premi√®res lignes)
+# dim_indicateurs_analyse - Preview
 
-| parent                | child                  | weight | alias                    | type |
-|-----------------------|------------------------|--------|--------------------------|------|
-|                       | Jours_consomm√©s        | 1.0    | Jours Consomm√©s          | N    |
-|                       | Jours_imput√©s          | 1.0    | Jours Imput√©s            | N    |
-|                       | Jours produits (J/H)   | 1.0    |                          | C    |
-| Jours produits (J/H)  | Jours_produits_regie   | 1.0    | Production R√©gie (J/H)   | N    |
-| Jours produits (J/H)  | Jours_produits_forfait | 1.0    | Production Forfait (J/H) | N    |
-|                       | Production (‚Ç¨ HT)      | 1.0    |                          | C    |
-| Production (‚Ç¨ HT)     | Prod_val_regie         | 1.0    | Production R√©gie (‚Ç¨ HT)  | N    |
-| Production (‚Ç¨ HT)     | Prod_val_forfait       | 1.0    | Production Forfait (‚Ç¨ HT)| N    |
-|                       | TJM Annuel             | 1.0    | TJM Annuel               | N    |
-|                       | TJM Mensuel            | 1.0    | TJM Mensuel              | N    |
+**Dataset:** `jedox`
+
+## Rows (10)
+
+- {"parent": "", "child": "Jours_consommÈs", "weight": "1.0", "alias": "Jours ConsommÈs", "type": "N"}
+- {"parent": "", "child": "Jours_imputÈs", "weight": "1.0", "alias": "Jours ImputÈs", "type": "N"}
+- {"parent": "", "child": "Jours produits (J/H)", "weight": "1.0", "alias": "", "type": "C"}
+- {"parent": "Jours produits (J/H)", "child": "Jours_produits_regie", "weight": "1.0", "alias": "Production RÈgie (J/H)", "type": "N"}
+- {"parent": "Jours produits (J/H)", "child": "Jours_produits_forfait", "weight": "1.0", "alias": "Production Forfait (J/H)", "type": "N"}
+- {"parent": "", "child": "Production (Ä HT)", "weight": "1.0", "alias": "", "type": "C"}
+- {"parent": "Production (Ä HT)", "child": "Prod_val_regie", "weight": "1.0", "alias": "Production Regie (Ä HT)", "type": "N"}
+- {"parent": "Production (Ä HT)", "child": "Prod_val_forfait", "weight": "1.0", "alias": "Production Forfait (Ä HT)", "type": "N"}
+- {"parent": "", "child": "Jours produits (RAF)", "weight": "1.0", "alias": "", "type": "C"}
+- {"parent": "Jours produits (RAF)", "child": "Raf_prod_jh_forfait", "weight": "1.0", "alias": "Jours produit Forfait (RAF)", "type": "N"}
