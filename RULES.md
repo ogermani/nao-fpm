@@ -42,10 +42,9 @@ Détails : `semantics/jedox_taxonomy.md` (valeurs des axes) et `semantics/jedox_
 2. **Agréger sur `value_num`** (DOUBLE), jamais `value_raw` (VARCHAR).
 3. **Filtrer une `version_fpm` explicite** : c'est un forecast mensuel glissant. Ne jamais mélanger
    deux versions FPM dans une même somme (chacune est une photo de prévision à une date donnée).
-4. **Grain de base : ANNUEL (`YYYY`)**. Le cube stocke les données à la maille annuelle (2020–2030).
-   Les cumuls YTD (`YYYY-MM_YTD`, ex: `2025-06_YTD`) sont disponibles, calculés par les règles Jedox.
-   Ne **jamais** additionner une mesure annuelle et une mesure YTD. Pour un cumul annuel d'un flux
-   (production, jours) → utiliser l'année (`periode = '2025'`) ou le YTD de décembre (`2025-12_YTD`).
+4. **Grain mensuel `YYYY-MM`** (2020-01 → 2030-12). Toujours filtrer une plage de mois cohérente.
+   Pour un cumul annuel → sommer les 12 mois ou utiliser la colonne `*_ytd` de `jedox.analyse_calc`.
+   Ne **jamais** mélanger des mois de versions FPM différentes dans une agrégation.
 5. **Ressource** : exclure les nœuds consolidés (`Total Ressources`) et l'élément technique
    `Surproduction` sauf demande explicite → sinon double-comptage. Filtrer les feuilles (`type='N'`).
 6. **Imputation** : distinguer **régie** et **forfait** via l'attribut `ForfaitRegie`, et les vrais
@@ -66,19 +65,21 @@ Détails : `semantics/jedox_taxonomy.md` (valeurs des axes) et `semantics/jedox_
 Le Parquet exporté ne contient **pas** les mesures calculées par les 26 règles Jedox. Elles sont
 recalculées dans le modèle dbt `jedox.analyse_calc` (format wide, grain YYYY).
 
-**Mesures disponibles dans `jedox.analyse_calc` :**
-- `prod_val_forfait` = `production_eur − prod_val_regie`
-- `jours_produits_forfait` = `jours_produits_jh − jours_produits_regie`
+**Mesures disponibles dans `jedox.analyse_calc` (grain YYYY-MM) :**
+- `marge_ht` = `marge_ht_regie + marge_ht_forfait`
 - `tjm` = `COALESCE(tjm_mensuel, tjm_annuel)` [règle 15]
 - `tjm_achete` = `COALESCE(tjm_mensuel_achete, tjm_annuel_achete)` [règle 16]
-- `jours_produits_redresses` : Régie→jours J/H · Forfait→jours imputés [règle 22]
-- `production_theorique` : Régie→prod réelle · Forfait→redressé×TJM [règle 24]
+- `jours_produits_redresses` : Régie→jours_regie · Forfait→jours_imputés [règle 22]
+- `production_theorique` : Régie→prod_val_regie · Forfait→redressé×TJM [règle 24]
 - `tjm_theorique` = `production_theorique / ROUND(jours_redresses, 2)` [règle 26]
-- `taux_utilisation` = `Jours Produits & Absences / jours_ouvres_annuels` [règle 4]
-- Attributs dims : `forfait_regie`, `bu`, `cdp`, `client_name`, `fpm_alias`, `previousfpm`…
+- `taux_utilisation` = `Jours Produits & Absences / jours_ouvres` [règle 4 — mensuel]
+- `taux_utilisation_ytd` = cumul annuel via window function
+- `*_ytd` : YTD accumulés par année pour les mesures clés (prod_val_regie, jours_produits_regie, jours_imputes, jours_consommes, jours_produits_redresses, marge_ht) [règles 9-10]
+- Attributs dims pré-joints : `forfait_regie`, `bu`, `cdp`, `client_name`, `fpm_alias`, `previousfpm`…
 
-**Non recalculé** (nécessite grain mensuel ou données manquantes) :
-- YTD mensuels, RAF année, Production (prev année), Taux présence, Potentiel de prod
+**Non recalculé** :
+- `Production (€ HT)` et `Jours produits (J/H)` (totaux régie+forfait calculés par règles Jedox)
+- `Production (prev année)`, Taux présence, Potentiel de prod
 
 → Voir `semantics/jedox_regles_cube.md` pour la logique complète de chaque règle.
 
