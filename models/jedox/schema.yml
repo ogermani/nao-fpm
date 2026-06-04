@@ -1,20 +1,52 @@
 version: 2
 
 models:
-  # ---- Cube --------------------------------------------------------------
+  # ---- Cube (format tall) ------------------------------------------------
   - name: analyse
     description: >
-      Cube Analyse (suivi FPM / production). Grain Période × Version FPM × Imputation ×
-      Organisation × Ressource × Indicateurs Analyse. `value_num` = cast numérique de `#Value`.
-      Exporté avec useRules=true → mesures dérivées matérialisées. Voir semantics/jedox_taxonomy.md.
+      Cube Analyse brut (format tall). Grain Période × Version FPM × Imputation ×
+      Organisation × Ressource × Indicateurs Analyse → value_num. 38 mesures de base.
+      Les mesures dérivées (TJM composite, prod forfait, taux utilisation…) sont dans
+      jedox.analyse_calc. Voir semantics/jedox_taxonomy.md.
     columns:
       - name: periode
         tests: [not_null]
       - name: version_fpm
         tests: [not_null]
       - name: indicateurs_analyse
-        description: "Mesure (hétérogène → en filtrer UNE). Beaucoup sont calculées par règles."
+        description: "Mesure (hétérogène → en filtrer UNE). Données de base uniquement."
         tests: [not_null]
+
+  # ---- Cube enrichi (format wide) ----------------------------------------
+  - name: analyse_calc
+    description: >
+      Cube Analyse enrichi (format wide). Grain YYYY × Version FPM × Imputation ×
+      Organisation × Ressource. Une colonne par mesure. Recalcule les règles Jedox
+      absentes du Parquet : prod_val_forfait, jours_produits_forfait, tjm, tjm_achete,
+      jours_produits_redresses, production_theorique, tjm_theorique, taux_utilisation.
+      Inclut aussi les attributs de dim_imputation (forfait_regie, bu, cdp, client_name)
+      et de dim_version_fpm (fpm_alias, fpm_currentmonth, previousfpm…).
+      Voir semantics/jedox_regles_cube.md pour la logique de calcul.
+    columns:
+      - name: periode
+        description: "Année YYYY (grain annuel uniquement — pas de YYYY-MM_YTD ici)."
+        tests: [not_null]
+      - name: version_fpm
+        tests: [not_null]
+      - name: imputation
+        tests: [not_null]
+      - name: forfait_regie
+        description: "'Régie', 'Forfait', ou vide (imputations internes / nœuds)."
+      - name: tjm
+        description: "TJM composite : COALESCE(TJM Mensuel, TJM Annuel) [règle 15]."
+      - name: jours_produits_redresses
+        description: "Régie→jours_regie, Forfait→jours_imputés, autre→jours_jh [règle 22]."
+      - name: production_theorique
+        description: "Régie→prod réelle, Forfait→redressé×TJM, Surproduction→NULL [règle 24]."
+      - name: tjm_theorique
+        description: "production_theorique / ROUND(jours_redresses, 2) [règle 26]."
+      - name: taux_utilisation
+        description: "Jours Produits & Absences / jours_ouvres_annuels [règle 4]. Ratio (pas %)."
 
   # ---- Dimensions (pcwat) ------------------------------------------------
   - &dim

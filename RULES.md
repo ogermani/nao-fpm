@@ -14,10 +14,22 @@
 
 Base DuckDB `lobellia_fpm`, schéma **`jedox`** (source Jedox EPM `LOBELLIA`, **français**).
 
-- **1 cube** : `jedox.analyse` — Période × Version FPM × Imputation × Organisation × Ressource ×
-  Indicateurs Analyse → `value_num` (suivi de production / staffing).
-- **6 dimensions** pcwat : `dim_periode`, `dim_version_fpm`, `dim_imputation`, `dim_organisation`,
-  `dim_ressource`, `dim_indicateurs_analyse`.
+### Tables principales
+
+| Table | Format | Usage |
+|---|---|---|
+| `jedox.analyse` | **Tall** (Indicateurs Analyse en colonne) | Mesures de base, grain YYYY + YYYY-MM_YTD. Filtrer `indicateurs_analyse`. |
+| `jedox.analyse_calc` | **Wide** (1 colonne/mesure, grain YYYY) | Mesures dérivées recalculées + attributs dims. **Préférer pour toute analyse FPM.** |
+| `jedox.dim_periode` | pcwat | Hiérarchie temps, attribut `jours_ouvres` |
+| `jedox.dim_version_fpm` | pcwat | Versions FPM, attributs `previousfpm`, `currentmonth` |
+| `jedox.dim_imputation` | pcwat | Projets/imputations, attributs `forfait_regie`, `is_projet` |
+| `jedox.dim_organisation` | pcwat | BU / entités |
+| `jedox.dim_ressource` | pcwat | Collaborateurs |
+| `jedox.dim_indicateurs_analyse` | pcwat | Catalogue des mesures (utile pour `jedox.analyse`) |
+
+**Règle de choix :**
+- Question sur une mesure dérivée (`TJM`, `taux_utilisation`, `prod_val_forfait`…) → **`jedox.analyse_calc`**
+- Question sur une mesure de base ou besoin du grain YTD (`YYYY-MM_YTD`) → **`jedox.analyse`**
 
 Détails : `semantics/jedox_taxonomy.md` (valeurs des axes) et `semantics/jedox_dimensions.md`
 (hiérarchies, JOIN/roll-up). Glossaire métier FPM : `semantics/glossaire.md`.
@@ -49,20 +61,26 @@ Détails : `semantics/jedox_taxonomy.md` (valeurs des axes) et `semantics/jedox_
 9. **Libellés** : joindre l'attribut `name` de la dimension pour rendre un code lisible
    (ex: `ressource`, `imputation` peuvent être des codes).
 
-## Mesures dérivées (rappel — cube exporté avec `useRules=true`)
+## Mesures dérivées — recalculées dans `jedox.analyse_calc`
 
-Le cube Analyse est piloté par **26 règles Jedox** (production régie/forfait, cumuls YTD, TJM
-théorique, taux d'utilisation/présence, comparaison à la FPM précédente via `PreviousFpm`…). Les
-valeurs dérivées sont **déjà matérialisées** dans le Parquet → les lire directement comme
-n'importe quelle `indicateurs_analyse`. **Ne pas les recalculer, ne pas re-sommer des YTD.**
+Le Parquet exporté ne contient **pas** les mesures calculées par les 26 règles Jedox. Elles sont
+recalculées dans le modèle dbt `jedox.analyse_calc` (format wide, grain YYYY).
 
-Points critiques :
-- Les mesures `… (YTD)` valent **0 pour les années ≠ année de la FPM courante**.
-- `Jours produits (redressé par ressource)` : Régie = J/H, Forfait = Jours imputés (≠ J/H).
-- `Surproduction` : nœud technique à **exclure** des totaux collaborateurs.
-- Production forfait pour les mois passés : vient de la **FPM précédente** (`PreviousFpm`).
+**Mesures disponibles dans `jedox.analyse_calc` :**
+- `prod_val_forfait` = `production_eur − prod_val_regie`
+- `jours_produits_forfait` = `jours_produits_jh − jours_produits_regie`
+- `tjm` = `COALESCE(tjm_mensuel, tjm_annuel)` [règle 15]
+- `tjm_achete` = `COALESCE(tjm_mensuel_achete, tjm_annuel_achete)` [règle 16]
+- `jours_produits_redresses` : Régie→jours J/H · Forfait→jours imputés [règle 22]
+- `production_theorique` : Régie→prod réelle · Forfait→redressé×TJM [règle 24]
+- `tjm_theorique` = `production_theorique / ROUND(jours_redresses, 2)` [règle 26]
+- `taux_utilisation` = `Jours Produits & Absences / jours_ouvres_annuels` [règle 4]
+- Attributs dims : `forfait_regie`, `bu`, `cdp`, `client_name`, `fpm_alias`, `previousfpm`…
 
-→ Voir `semantics/jedox_regles_cube.md` pour la logique complète de chaque mesure.
+**Non recalculé** (nécessite grain mensuel ou données manquantes) :
+- YTD mensuels, RAF année, Production (prev année), Taux présence, Potentiel de prod
+
+→ Voir `semantics/jedox_regles_cube.md` pour la logique complète de chaque règle.
 
 ## Orchestration — où trouver les détails
 

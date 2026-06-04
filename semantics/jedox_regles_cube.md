@@ -1,11 +1,15 @@
 # Règles de gestion — cube Analyse (LOBELLIA)
 
-> Le cube Analyse est piloté par **26 règles Jedox** (`useRules=true`). Toutes les mesures dérivées
-> sont **matérialisées dans le Parquet** — elles se lisent directement dans `jedox.analyse` comme
-> n'importe quelle autre mesure. **Ne pas les recalculer.**
+> Le cube Analyse est piloté par **26 règles Jedox**. Le Parquet exporté contient les **38 mesures
+> de base** mais **pas les mesures dérivées** — les règles n'ont pas été appliquées à l'export.
 >
+> Les mesures dérivées sont recalculées dans **`jedox.analyse_calc`** (modèle dbt, format wide).
 > Ce fichier décrit la logique métier en français clair. Les formules Jedox brutes sont dans
 > `LOBELLIA.jds` (lignes 156316–156377).
+>
+> **Résumé : quelle table utiliser ?**
+> - Mesures de base (`Production (€ HT)`, `Jours_imputés`, `TJM Annuel`…) → `jedox.analyse`
+> - Mesures dérivées (`tjm`, `prod_val_forfait`, `taux_utilisation`…) → `jedox.analyse_calc`
 
 ---
 
@@ -243,33 +247,41 @@ Potentiel de prod  =  max(0,  JoursOuvrés − Jours utilisés)
 
 ## 8. Mesures issues du cube intermédiaire Analyse_Calcul
 
-> Le cube `Analyse_Calcul` est un cube technique non chargé dans DuckDB. Ses calculs alimentent
-> le cube `Analyse`. Avec `useRules=true`, toutes ces valeurs sont **directement disponibles** dans
-> `jedox.analyse` — pas besoin d'un cube séparé.
+Le cube `Analyse_Calcul` est un cube technique Jedox. Ses calculs sont **présents directement
+dans `jedox.analyse`** (ils font partie des 38 mesures de base exportées).
 
-| Mesure dans `jedox.analyse` | Origine dans Analyse_Calcul | Description |
-|---|---|---|
-| `RAF_jours_produits_regie` | Calcul RAF régie | Jours régie restant à facturer |
-| `Raf_prod_val_regie` | Calcul RAF régie | Valeur € régie restant à facturer |
-| `Raf_prod_jh_forfait` | Calcul RAF forfait | Jours forfait restant à produire |
-| `Raf_prod_val_forfait` | Calcul RAF forfait | Valeur € forfait restant à produire |
-| `Marge HT` | Agrégat | Marge brute totale (régie + forfait) |
-| `Marge HT Régie` | Calcul régie | Marge brute régie = Production régie − coûts |
-| `Marge HT Forfait` | Calcul forfait | Marge brute forfait = Production forfait − coûts |
-| `Jours_consommés` | Saisie temps | Jours saisis dans les feuilles de temps (≠ produits) |
-| `Jours Vendus` | Contrats | Jours vendus contractuellement |
+| Mesure dans `jedox.analyse` | Description |
+|---|---|
+| `RAF_jours_produits_regie` | Jours régie restant à facturer |
+| `Raf_prod_val_regie` | Valeur € régie restant à facturer |
+| `Raf_prod_jh_forfait` | Jours forfait restant à produire |
+| `Raf_prod_val_forfait` | Valeur € forfait restant à produire |
+| `Marge HT` | Marge brute totale (régie + forfait) |
+| `Marge HT Régie` | Marge brute régie |
+| `Marge HT Forfait` | Marge brute forfait |
+| `Jours_consommés` | Jours saisis dans les feuilles de temps (≠ produits) |
+| `Jours Vendus` | Jours vendus contractuellement |
+
+Ces mesures se lisent dans `jedox.analyse` en filtrant sur `indicateurs_analyse`, ou dans
+`jedox.analyse_calc` comme colonnes directes (`raf_prod_val_regie`, `marge_ht`, etc.).
 
 ---
 
-## Synthèse — Quelle mesure pour quelle question ?
+## Synthèse — Quelle table et quelle mesure pour quelle question ?
 
-| Question | Mesure(s) à utiliser | Période | Filtre |
+| Question | Table | Colonne / filtre | Période |
 |---|---|---|---|
-| Production facturée sur l'année | `Production (€ HT)` | `YYYY` | `version_fpm` explicite |
-| Production facturée cumulée à fin juin | `Production (€ HT)` | `YYYY-06_YTD` | idem |
-| Jours consommés vs produits | `Jours_consommés`, `Jours produits (J/H)` | `YYYY` | une seule mesure à la fois |
-| Prévision annuelle totale | `Production (prev année)` | `YYYY` ou `YYYY-MM_YTD` | version FPM courante |
-| TJM moyen d'une équipe | calculer `SUM(Production (€ HT)) / SUM(Jours produits (J/H))` | `YYYY` | |
-| Taux d'utilisation d'un collaborateur | `Taux dutilisation` | `YYYY` | ressource feuille (`type='N'`) |
-| RAF sur un projet forfait à fin de mois | `Raf_prod_val_forfait` | `YYYY` | `forfait_regie='Forfait'` |
-| Comparaison deux FPM successives | même mesure, deux versions FPM | même période | |
+| Production facturée sur l'année | `jedox.analyse_calc` | `production_eur` | `YYYY` |
+| Production régie seule | `jedox.analyse_calc` | `prod_val_regie` | `YYYY` |
+| Production forfait seule | `jedox.analyse_calc` | `prod_val_forfait` | `YYYY` |
+| Production cumulée à fin juin | `jedox.analyse` | `indicateurs_analyse='Production (€ HT)'` | `YYYY-06_YTD` |
+| TJM d'un collaborateur | `jedox.analyse_calc` | `tjm` | `YYYY` |
+| TJM moyen d'une équipe | `jedox.analyse_calc` | `SUM(production_eur)/SUM(jours_produits_jh)` | `YYYY` |
+| TJM théorique (prod/jours redressés) | `jedox.analyse_calc` | `tjm_theorique` | `YYYY` |
+| Jours imputés vs produits | `jedox.analyse_calc` | `jours_imputes`, `jours_produits_jh` | `YYYY` |
+| Jours redressés (régie/forfait) | `jedox.analyse_calc` | `jours_produits_redresses` | `YYYY` |
+| Taux d'utilisation d'un collaborateur | `jedox.analyse_calc` | `taux_utilisation` | `YYYY` |
+| RAF sur un projet forfait | `jedox.analyse_calc` | `raf_prod_val_forfait` | `YYYY` |
+| Marge brute par projet | `jedox.analyse_calc` | `marge_ht`, `marge_ht_regie`, `marge_ht_forfait` | `YYYY` |
+| Comparaison deux FPM successives | `jedox.analyse_calc` | même colonne, deux `version_fpm` | `YYYY` |
+| Liste des projets forfait actifs | `jedox.dim_imputation` | `WHERE forfait_regie='Forfait' AND is_actif='1'` | — |
