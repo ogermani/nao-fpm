@@ -17,8 +17,14 @@
 --   tjm_theorique              = production_theorique / ROUND(jours_redresses, 2)  [règle 26]
 --   taux_utilisation           = Jours Produits & Absences / jours_ouvres_annuels  [règle 4]
 --
--- Non implémenté (nécessite grain mensuel ou données manquantes) :
---   YTD/RAF année/prev année, Taux présence, Potentiel de prod, Surproduction (production_theorique≈NULL)
+-- Non implémenté :
+--   YTD accumulés / RAF année / prev année : le cube Analyse est structurellement annuel —
+--     dim_periode a des éléments mensuels mais les cellules du cube à la maille YYYY-MM
+--     sont vides (0 ligne dans l'export). Les règles YTD de Jedox n'ont pas de données
+--     mensuelles sur lesquelles s'appliquer.
+--   Taux présence    : logique de date complexe par ressource
+--   Potentiel de prod: nécessite le cube Taux_TJ (non chargé)
+--   Surproduction dans production_theorique : nécessite agrégation croisée → retourne NULL
 
 with
 
