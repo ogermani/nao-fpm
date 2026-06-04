@@ -40,8 +40,16 @@ Détails : `semantics/jedox_taxonomy.md` (valeurs des axes) et `semantics/jedox_
    `Jours produits (J/H)` = jours, `TJM` = €/jour, `Taux dutilisation` = %, …) → **jamais** les
    additionner entre elles.
 2. **Agréger sur `value_num`** (DOUBLE), jamais `value_raw` (VARCHAR).
-3. **Filtrer une `version_fpm` explicite** : c'est un forecast mensuel glissant. Ne jamais mélanger
-   deux versions FPM dans une même somme (chacune est une photo de prévision à une date donnée).
+3. **`version_fpm` : utiliser la FPM courante par défaut.** Si l'utilisateur ne précise pas de version
+   FPM, utiliser automatiquement la FPM de Production la plus récente (≤ date du jour) :
+   ```sql
+   SELECT child FROM jedox.dim_version_fpm
+   WHERE type_version = 'Production'
+     AND currentmonth <= strftime(current_date, '%Y-%m')
+   ORDER BY currentmonth DESC LIMIT 1
+   ```
+   Mentionner dans la réponse quelle FPM a été retenue (ex : *"j'utilise la FPM de juin 2026"*).
+   Ne jamais mélanger deux versions FPM dans une même somme.
 4. **Grain mensuel `YYYY-MM`** (2020-01 → 2030-12). Toujours filtrer une plage de mois cohérente.
    Pour un cumul annuel → sommer les 12 mois ou utiliser la colonne `*_ytd` de `jedox.analyse_calc`.
    Ne **jamais** mélanger des mois de versions FPM différentes dans une agrégation.
