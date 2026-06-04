@@ -30,9 +30,10 @@ Détails : `semantics/jedox_taxonomy.md` (valeurs des axes) et `semantics/jedox_
 2. **Agréger sur `value_num`** (DOUBLE), jamais `value_raw` (VARCHAR).
 3. **Filtrer une `version_fpm` explicite** : c'est un forecast mensuel glissant. Ne jamais mélanger
    deux versions FPM dans une même somme (chacune est une photo de prévision à une date donnée).
-4. **Période au grain mensuel** (`YYYY-MM`). Pour un cumul annuel d'un **flux** (production, jours
-   produits) → somme des mois (ou utiliser la mesure `… (YTD)` déjà calculée par règle, sans la
-   re-sommer). Ne pas additionner une mesure YTD avec sa version mensuelle.
+4. **Grain de base : ANNUEL (`YYYY`)**. Le cube stocke les données à la maille annuelle (2020–2030).
+   Les cumuls YTD (`YYYY-MM_YTD`, ex: `2025-06_YTD`) sont disponibles, calculés par les règles Jedox.
+   Ne **jamais** additionner une mesure annuelle et une mesure YTD. Pour un cumul annuel d'un flux
+   (production, jours) → utiliser l'année (`periode = '2025'`) ou le YTD de décembre (`2025-12_YTD`).
 5. **Ressource** : exclure les nœuds consolidés (`Total Ressources`) et l'élément technique
    `Surproduction` sauf demande explicite → sinon double-comptage. Filtrer les feuilles (`type='N'`).
 6. **Imputation** : distinguer **régie** et **forfait** via l'attribut `ForfaitRegie`, et les vrais
